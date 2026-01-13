@@ -2,19 +2,17 @@ package com.rocketseat.events.controller;
 
 import com.rocketseat.events.model.Event;
 import com.rocketseat.events.service.EventService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 public class EventController {
 
     private final EventService eventService;
-
-    public EventController(EventService eventService) {
-        this.eventService = eventService;
-    }
 
     @PostMapping("/events")
     public Event addNewEvent(@RequestBody Event newEvent){

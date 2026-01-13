@@ -12,18 +12,20 @@ public class Subscription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
+    @Column(name = "subscription_number")
     private Integer subscriptionNumber;
 
     @ManyToOne
-    @JoinColumn(name = "subscribed_user_id", nullable = false)
-    private User subscribedUser;
-
-    @ManyToOne
-    @JoinColumn(name = "indication_user_id")
-    private User indicationUser;
-
-    @ManyToOne
-    @JoinColumn(name = "event_id", nullable = false)
+    @JoinColumn(name = "event_id")
     private Event event;
+
+    @ManyToOne
+    @JoinColumn(name = "subscribed_user_id")
+    private User subscriber;
+
+    @ManyToOne
+    @JoinColumn(name = "indication_user_id", nullable = true)
+    private User indication;
+
+
 }
