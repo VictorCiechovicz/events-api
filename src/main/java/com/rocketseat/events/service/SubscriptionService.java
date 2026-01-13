@@ -21,7 +21,7 @@ public class SubscriptionService {
     private final UserRepository userRepository;
 
 
-    public SubscriptionResponse createNewSubscription(String eventName, User user){
+    public SubscriptionResponse createNewSubscription(String eventName, User user,Integer userId){
 
         Subscription subs = new Subscription();
         Event evt = eventRepository.findByPrettyName(eventName);
@@ -34,9 +34,15 @@ public class SubscriptionService {
         if(userRec == null){
             userRec = userRepository.save(user);
         }
+        User indicator =  userRepository.findById(userId).orElse(null);
+if(indicator == null){
+    throw  new EventNotFoundException("User not found");
+}
+
 
         subs.setEvent(evt);
         subs.setSubscriber(userRec);
+        subs.setIndication(indicator);
 
         Subscription tmpSub = subscriptionRepository.findByEventAndSubscriber(evt,userRec);
 
@@ -46,7 +52,7 @@ public class SubscriptionService {
 
         Subscription res = subscriptionRepository.save(subs);
 
-        return res;
+        return new SubscriptionResponse(res.getSubscriptionNumber(),"http://code"+res.getIndication());
 
     }
 

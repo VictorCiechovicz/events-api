@@ -21,11 +21,13 @@ public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
 
-    @PostMapping("/subscription/{prettyName}")
-    public ResponseEntity<?>  createSubscription(@PathVariable String prettyName, @RequestBody User subscriber){
+    @PostMapping({"/subscription/{prettyName}","/subscription/{prettyName}/{userId}"})
+    public ResponseEntity<?>  createSubscription(@PathVariable String prettyName,
+                                                 @PathVariable (required = false)  Integer userId,
+                                                 @RequestBody User subscriber){
 
         try{
-     SubscriptionResponse sub = subscriptionService.createNewSubscription(prettyName,subscriber);
+     SubscriptionResponse sub = subscriptionService.createNewSubscription(prettyName,subscriber,userId);
 
      if(subscriber!=null){
          return ResponseEntity.ok(sub);
