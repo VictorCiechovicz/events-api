@@ -9,10 +9,7 @@ import com.rocketseat.events.model.User;
 import com.rocketseat.events.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,4 +37,25 @@ public class SubscriptionController {
         }
 
      return ResponseEntity.badRequest().build();
-}}
+}
+
+    @GetMapping("/subscription/{prettyName}/ranking")
+    public ResponseEntity<?> generateRaningByEvent(@PathVariable String prettyName){
+        try{
+            return ResponseEntity.ok(subscriptionService.getCompleteRanking(prettyName).subList(0, 3));
+        }catch(EventNotFoundException e){
+            return ResponseEntity.status(404).body(new ErrorMessage(e.getMessage()));
+        }
+    }
+
+    @GetMapping("/subscription/{prettyName}/ranking/{userId}")
+    public ResponseEntity<?> generateRaningByEventAndUser(@PathVariable String prettyName, @PathVariable Integer userId){
+        try{
+            return ResponseEntity.ok(subscriptionService.getRankingByUser(prettyName, userId));
+        }catch(Exception ex){
+            return ResponseEntity.status(404).body(new ErrorMessage(ex.getMessage()));
+        }
+    }
+
+
+}
